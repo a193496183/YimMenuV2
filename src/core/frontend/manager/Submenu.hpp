@@ -1,13 +1,14 @@
 #pragma once
 #include "Category.hpp"
+#include "core/util/Strings.hpp"
 
 namespace YimMenu
 {
 	class Submenu
 	{
 	public:
-		constexpr Submenu(std::string name, std::string icon = "") :
-		    m_Name(name),
+		Submenu(std::string name, std::string icon = "") :
+		    m_Name(LocalizeMenuText(name)),
 		    m_Icon(icon)
 		{
 		}

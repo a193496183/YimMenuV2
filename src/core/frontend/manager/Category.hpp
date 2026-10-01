@@ -1,13 +1,14 @@
 #pragma once
 #include "UIItem.hpp"
+#include "core/util/Strings.hpp"
 
 namespace YimMenu
 {
 	class Category
 	{
 	public:
-		constexpr Category(std::string_view name) :
-		    m_Name(name)
+		Category(std::string_view name) :
+		    m_Name(LocalizeMenuText(std::string{name}))
 		{
 		}
 
