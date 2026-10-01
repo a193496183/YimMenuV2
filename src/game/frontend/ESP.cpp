@@ -3,6 +3,7 @@
 #include "common.hpp"
 #include "core/commands/BoolCommand.hpp"
 #include "core/commands/ColorCommand.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/util/Math.hpp"
 #include "game/backend/Players.hpp"
 #include "game/backend/Self.hpp"
@@ -301,16 +302,16 @@ namespace YimMenu
 		if (is_camera)
 		{
 			color = Red;
-			info += " (Camera)";
+			info += std::format(" ({})", Localization::Translate("Camera"));
 		}
 		else if (is_signal_jammer)
 		{
 			color = Red;
-			info += " (Jammer)";
+			info += std::format(" ({})", Localization::Translate("Jammer"));
 		}
 		else if (is_mission_object)
 		{
-			info += " (Mission)";
+			info += std::format(" ({})", Localization::Translate("Mission Object"));
 		}
 
 		if (auto screenPos = worldToScreen(coords))

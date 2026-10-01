@@ -2,6 +2,7 @@
 #include "core/commands/Command.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/commands/Vector3Command.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/SavedLocations.hpp"
 #include "game/backend/Self.hpp"
 #include "game/pointers/Pointers.hpp"
@@ -53,7 +54,8 @@ namespace YimMenu
 			{
 				for (auto& l : SavedLocations::GetAllSavedLocations() | std::ranges::views::keys)
 				{
-					if (ImGui::Selectable(l.data(), l == m_CurrentCategory))
+					const auto translatedCategory = Localization::Translate(l);
+					if (ImGui::Selectable(translatedCategory.c_str(), l == m_CurrentCategory))
 					{
 						m_CurrentCategory = l;
 					}
@@ -110,7 +112,7 @@ namespace YimMenu
 			ImGui::EndPopup();
 		}
 
-		auto& label = m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel();
+		const auto label = Localization::Translate(m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel());
 		if (!label.empty())
 		{
 			ImGui::SameLine();

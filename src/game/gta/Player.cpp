@@ -8,6 +8,7 @@
 #include "types/script/globals/GPBD_FM.hpp"
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/NodeHooks.hpp"
 #include "game/backend/Players.hpp"
 #include "game/gta/Vehicle.hpp"
@@ -56,7 +57,8 @@ namespace YimMenu
 	{
 		if (!IsValid())
 		{
-			return "Invalid";
+			static const std::string invalidName = Localization::Translate("Invalid");
+			return invalidName.c_str();
 		}
 
 		return m_Handle->GetName();

@@ -2,6 +2,7 @@
 #include "core/commands/Commands.hpp"
 #include "core/commands/Command.hpp"
 #include "core/commands/LoopedCommand.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/toggle/imgui_toggle.hpp"
 
 namespace YimMenu
@@ -21,18 +22,20 @@ namespace YimMenu
 		}
 
 		bool enabled = m_Command->GetState();
-		if (ImGui::Toggle(m_LabelOverride.has_value() ? m_LabelOverride.value().data() : m_Command->GetLabel().data(), &enabled))
+		const auto label = Localization::TranslateLabel(m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel());
+		const auto description = Localization::Translate(m_Command->GetDescription());
+		if (ImGui::Toggle(label.c_str(), &enabled))
 			m_Command->SetState(enabled);
 
 		// TODO: refactor this
 
-		auto windowLabel = std::format("{} Hotkey", m_Command->GetLabel());
+		auto windowLabel = Localization::FormatHotkeyWindowTitle(m_Command->GetLabel());
 
 		if (ImGui::IsItemHovered())
 		{
-			ImGui::SetTooltip("%s", m_Command->GetDescription().data());
+			ImGui::SetTooltip("%s", description.c_str());
 			if (GetAsyncKeyState(VK_OEM_3) & 0x8000)
-				ImGui::OpenPopup(std::format("{} Hotkey", m_Command->GetLabel()).data());
+				ImGui::OpenPopup(windowLabel.data());
 		}
 
 		ImGui::SetNextWindowSize(ImVec2(500, 120));

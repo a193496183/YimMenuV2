@@ -2,6 +2,7 @@
 #include "core/commands/ColorCommand.hpp"
 #include "core/commands/Command.hpp"
 #include "core/commands/Commands.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/toggle/imgui_toggle.hpp"
 
 namespace YimMenu
@@ -21,12 +22,12 @@ namespace YimMenu
 		}
 
 		auto color = m_Command->GetState();
-		auto label = m_LabelOverride.has_value() ? m_LabelOverride.value().c_str() : m_Command->GetLabel().c_str();
+		const auto label = Localization::TranslateLabel(m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel());
 
 		ImGui::SameLine();
 
 		ImGui::SetNextItemWidth(150);
-		if (ImGui::ColorButton(label, color))
+		if (ImGui::ColorButton(label.c_str(), color))
 		{
 			ImGui::OpenPopup(label);
 		}

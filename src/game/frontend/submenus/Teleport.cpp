@@ -1,6 +1,7 @@
 #include "Teleport.hpp"
 
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/backend/FiberPool.hpp"
 #include "game/backend/SavedLocations.hpp"
 #include "game/backend/Self.hpp"
@@ -8,6 +9,18 @@
 
 namespace YimMenu::Submenus
 {
+	namespace
+	{
+		std::string NormalizeSavedLocationCategory(std::string_view category)
+		{
+			const auto localizedDefault = Localization::Translate("Default");
+			if (category.empty() || category == localizedDefault)
+				return "Default";
+
+			return std::string(category);
+		}
+	}
+
 	static float GetDistanceFromLocation(const SavedLocation& t)
 	{
 		return rage::fvector3(t.x, t.y, t.z).GetDistance(Self::GetPed().GetPosition());
@@ -17,7 +30,7 @@ namespace YimMenu::Submenus
 	{
 		ImGui::BeginGroup();
 		static std::string newLocationName{};
-		static std::string category = "Default";
+		static std::string category = Localization::Translate("Default");
 		static SavedLocation locationToDelete;
 
 		if (!std::string(locationToDelete.name).empty())
@@ -31,7 +44,7 @@ namespace YimMenu::Submenus
 
 			if (ImGui::Button("Yes"))
 			{
-				SavedLocations::DeleteSavedLocation(category, locationToDelete.name);
+				SavedLocations::DeleteSavedLocation(NormalizeSavedLocationCategory(category), locationToDelete.name);
 				locationToDelete.name = "";
 				ImGui::CloseCurrentPopup();
 			}
@@ -78,7 +91,7 @@ namespace YimMenu::Submenus
 					teleportLocation.yaw = teleportEntity.GetHeading();
 					teleportLocation.pitch = 0.0f; // why do we need pitch and roll anyway?
 					teleportLocation.roll = 0.0f;
-					SavedLocations::SaveNewLocation(category, teleportLocation);
+					SavedLocations::SaveNewLocation(NormalizeSavedLocationCategory(category), teleportLocation);
 				}
 			});
 		};
@@ -99,7 +112,8 @@ namespace YimMenu::Submenus
 		{
 			for (auto& l : SavedLocations::GetAllSavedLocations() | std::ranges::views::keys)
 			{
-				if (ImGui::Selectable(l.data(), l == category))
+				const auto translatedCategory = Localization::Translate(l);
+				if (ImGui::Selectable(translatedCategory.c_str(), l == NormalizeSavedLocationCategory(category)))
 				{
 					category = l;
 				}
@@ -117,14 +131,15 @@ namespace YimMenu::Submenus
 		ImGui::Text("Locations");
 		if (ImGui::BeginListBox("##saved_locs", {200, -1})) // Need automatic dimensions instead of hard coded
 		{
-			if (SavedLocations::GetAllSavedLocations().find(category) != SavedLocations::GetAllSavedLocations().end())
+			const auto categoryKey = NormalizeSavedLocationCategory(category);
+			if (SavedLocations::GetAllSavedLocations().find(categoryKey) != SavedLocations::GetAllSavedLocations().end())
 			{
 				std::vector<SavedLocation> current_list{};
 
 				if (!filter.empty())
 					current_list = SavedLocations::SavedLocationsFilteredList(filter);
 				else
-					current_list = SavedLocations::GetAllSavedLocations().at(category);
+					current_list = SavedLocations::GetAllSavedLocations().at(categoryKey);
 
 				for (const auto& l : current_list)
 				{

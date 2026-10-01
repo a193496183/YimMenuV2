@@ -2,8 +2,10 @@
 #include "core/commands/ColorCommand.hpp"
 #include "core/commands/Command.hpp"
 #include "core/commands/FloatCommand.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/manager/styles/Themes.hpp"
 #include <regex>
+#include <sstream>
 
 namespace YimMenu
 {
@@ -41,7 +43,22 @@ namespace YimMenu
 		std::regex uscore_re("_");
 		spaced = std::regex_replace(spaced, uscore_re, " ");
 
-		return spaced;
+		auto translated = Localization::Translate(spaced);
+		if (translated == spaced)
+		{
+			std::istringstream stream(spaced);
+			std::string token;
+			std::string fallback;
+			while (stream >> token)
+			{
+				if (!fallback.empty())
+					fallback.push_back(' ');
+				fallback.append(Localization::Translate(token));
+			}
+			translated = fallback;
+		}
+
+		return translated;
 	}
 
 	void SyncColorCommandsToStyle()

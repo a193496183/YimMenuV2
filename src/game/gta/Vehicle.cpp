@@ -1,6 +1,7 @@
 #include "Vehicle.hpp"
 #include "Natives.hpp"
 #include "core/backend/ScriptMgr.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/pointers/Pointers.hpp"
 #include "game/gta/data/VehicleValues.hpp"
 #include "game/gta/data/Vehicles.hpp"
@@ -196,10 +197,14 @@ namespace YimMenu
 		std::string display = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(gxt.c_str());
 
 		std::string finalName = display == "NULL" ? gxt : display;
+		finalName = Localization::Translate(finalName);
 
 		std::string maker = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(VEHICLE::GET_MAKE_NAME_FROM_VEHICLE_MODEL(model));
 		if (maker != "NULL")
+		{
+			maker = Localization::Translate(maker);
 			finalName = maker + " " + finalName;
+		}
 
 		int id = VEHICLE::GET_VEHICLE_CLASS_FROM_NAME(model);
 		finalName = std::string(g_VehicleClassNames[id]) + " " + finalName;

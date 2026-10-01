@@ -2,6 +2,7 @@
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/backend/Self.hpp"
 #include "game/backend/Tunables.hpp"
 #include "game/backend/ScriptPatches.hpp"
@@ -174,7 +175,8 @@ namespace YimMenu::Submenus
 				return ImGui::Text("Freemode is not running.");
 			}
 
-			if (ImGui::BeginCombo("Select Event", randomEventNames[selectedEvent]))
+			const auto selectedEventName = Localization::Translate(randomEventNames[selectedEvent]);
+			if (ImGui::BeginCombo("Select Event", selectedEventName.c_str()))
 			{
 				for (int event = DRUG_VEHICLE; event < MAX_EVENTS; event++)
 				{
@@ -192,7 +194,8 @@ namespace YimMenu::Submenus
 						break;
 					}
 
-					if (ImGui::Selectable(randomEventNames[event], event == selectedEvent))
+					const auto eventName = Localization::Translate(randomEventNames[event]);
+					if (ImGui::Selectable(eventName.c_str(), event == selectedEvent))
 					{
 						FiberPool::Push([event] {
 							selectedEvent = (eRandomEvent)event;
@@ -310,7 +313,8 @@ namespace YimMenu::Submenus
 				}
 			}
 
-			ImGui::Text("State: %s", GetEventStateString().c_str());
+			const auto eventState = Localization::Translate(GetEventStateString());
+			ImGui::Text("State: %s", eventState.c_str());
 			if (GSBDRandomEvents->EventData[selectedEvent].State == eRandomEventState::INACTIVE)
 			{
 				ImGui::Text("Location: N/A");

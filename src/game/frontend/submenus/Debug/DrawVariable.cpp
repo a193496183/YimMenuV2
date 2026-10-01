@@ -1,4 +1,5 @@
 #include "DrawVariable.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/imgui_bitfield.hpp"
 #include "types/script/scrVector.hpp"
 
@@ -102,7 +103,9 @@ namespace YimMenu
 		{
 			auto vectorPtr = (rage::scrVector*)value;
 			std::ostringstream vector;
-			vector << "X: " << std::fixed << std::setprecision(2) << vectorPtr->x << " Y: " << vectorPtr->y << " Z: " << vectorPtr->z;
+			vector << Localization::Translate("X") << ": " << std::fixed << std::setprecision(2) << vectorPtr->x
+			       << " " << Localization::Translate("Y") << ": " << vectorPtr->y
+			       << " " << Localization::Translate("Z") << ": " << vectorPtr->z;
 			ImGui::Selectable(vector.str().c_str(), false, ImGuiSelectableFlags_Disabled);
 			break;
 		}

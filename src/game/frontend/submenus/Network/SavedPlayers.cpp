@@ -1,5 +1,6 @@
 #include "SavedPlayers.hpp"
 #include "core/backend/FiberPool.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/imgui_colors.h"
 #include "core/frontend/Notifications.hpp"
 #include "game/backend/SavedPlayers.hpp"
@@ -63,7 +64,10 @@ namespace YimMenu::Submenus
 		}
 
 		if (data->m_FetchedData && ImGui::IsItemHovered())
-			ImGui::SetTooltip("%s", FetchedPlayerData::GameStateToString(data->m_FetchedData->m_GameState).data());
+		{
+			const auto gameState = Localization::Translate(FetchedPlayerData::GameStateToString(data->m_FetchedData->m_GameState));
+			ImGui::SetTooltip("%s", gameState.c_str());
+		}
 
 		ImGui::PopID();
 	}
@@ -130,14 +134,16 @@ namespace YimMenu::Submenus
 			if (g_SelectedPlayer->m_FetchedData)
 			{
 				auto& data = *g_SelectedPlayer->m_FetchedData;
-				ImGui::Text("Session Type: %s", FetchedPlayerData::GameStateToString(data.m_GameState).data());
+				const auto gameState = Localization::Translate(FetchedPlayerData::GameStateToString(data.m_GameState));
+				ImGui::Text("Session Type: %s", gameState.c_str());
 				ImGui::Text("Host of Session: %s", data.m_HostOfSession ? "Yes" : "No");
 				ImGui::Text("Is Spectating: %s", data.m_Spectating ? "Yes" : "No");
 				ImGui::Text("Is Job Lobby: %s", data.m_InTransition ? "Yes" : "No");
 				ImGui::Text("Host of Job Lobby: %s", data.m_HostOfTransition ? "Yes" : "No");
 				if (data.m_MissionType != FetchedPlayerData::MissionType::NONE)
 				{
-					ImGui::Text("Mission Type: %s", FetchedPlayerData::MissionTypeToString(data.m_MissionType).data());
+					const auto missionType = Localization::Translate(FetchedPlayerData::MissionTypeToString(data.m_MissionType));
+					ImGui::Text("Mission Type: %s", missionType.c_str());
 					if (data.m_MissionName)
 						ImGui::Text("Mission Name: %s", data.m_MissionName->data());
 					else

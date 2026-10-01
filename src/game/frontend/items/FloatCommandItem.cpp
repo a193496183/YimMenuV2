@@ -2,6 +2,7 @@
 #include "core/commands/Command.hpp"
 #include "core/commands/Commands.hpp"
 #include "core/commands/FloatCommand.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/toggle/imgui_toggle.hpp"
 
 namespace YimMenu
@@ -22,7 +23,7 @@ namespace YimMenu
 		}
 
 		auto value = m_Command->GetState();
-		auto label = m_LabelOverride.has_value() ? m_LabelOverride.value().c_str() : m_Command->GetLabel().c_str();
+		const auto label = Localization::TranslateLabel(m_LabelOverride.has_value() ? m_LabelOverride.value() : m_Command->GetLabel());
 		if (!m_Command->GetMinimum().has_value() || !m_Command->GetMaximum().has_value() || !m_useSlider)
 		{
 			ImGui::SetNextItemWidth(150);

@@ -2,6 +2,7 @@
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "game/gta/data/ScriptNames.hpp"
 #include "game/gta/data/StackSizes.hpp"
 #include "game/gta/Scripts.hpp"
@@ -263,11 +264,13 @@ namespace YimMenu::Submenus
 
 			bool modified = ImGui::InputTextWithHint("Script Name", "Search", &scriptSearch);
 
-			if (ImGui::BeginCombo("Stack Size", stackSizeName.c_str()))
+			const auto selectedStackSize = Localization::Translate(stackSizeName);
+			if (ImGui::BeginCombo("Stack Size", selectedStackSize.c_str()))
 			{
 				for (auto& p : stackSizes)
 				{
-					if (ImGui::Selectable(std::format("{} ({})", p.first, (int)p.second).data(), stackSize == p.second))
+					const auto translatedStackSize = Localization::Translate(p.first);
+					if (ImGui::Selectable(std::format("{} ({})", translatedStackSize, (int)p.second).c_str(), stackSize == p.second))
 					{
 						stackSizeName = p.first;
 						stackSize = p.second;

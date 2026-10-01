@@ -9,6 +9,7 @@
 #include "types/script/scrThread.hpp"
 #include "core/commands/Commands.hpp"
 #include "game/features/self/CustomWeapon.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace YimMenu::Submenus
 {
@@ -82,7 +83,7 @@ namespace YimMenu::Submenus
 							std::string nameDisplay = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(nameGxt.c_str());
 							std::string descDisplay = HUD::GET_FILENAME_FOR_AUDIO_CONVERSATION(descGxt.c_str());
 
-							weaponDisplays.push_back({((nameDisplay.empty() || nameDisplay == "NULL" || nameDisplay == "Invalid") ? "" : nameDisplay), ((descDisplay.empty() || descDisplay == "NULL" || descDisplay == "Invalid") ? "" : descDisplay), weap});
+							weaponDisplays.push_back({((nameDisplay.empty() || nameDisplay == "NULL" || nameDisplay == "Invalid") ? "" : Localization::Translate(nameDisplay)), ((descDisplay.empty() || descDisplay == "NULL" || descDisplay == "Invalid") ? "" : Localization::Translate(descDisplay)), weap});
 						}
 
 						thread->Kill();

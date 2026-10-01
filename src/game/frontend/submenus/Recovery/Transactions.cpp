@@ -2,6 +2,7 @@
 #include "core/backend/FiberPool.hpp"
 #include "core/backend/ScriptMgr.hpp"
 #include "core/frontend/Notifications.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/imgui_colors.h"
 #include "game/backend/AnticheatBypass.hpp"
 #include "game/gta/Natives.hpp"
@@ -378,12 +379,14 @@ namespace YimMenu::Submenus
 	static bool EditTransactionItem(std::string_view label, TransactionInfo& info, TransactionItemHash& item, bool& is_valid, bool required = true, bool validate_category = true)
 	{
 		bool modified = false;
+		const auto translatedLabel = Localization::TranslateLabel(label);
+		const auto translatedHint = Localization::Translate("Optional");
 
 		ImGui::SetNextItemWidth(340.0f);
 		if (
 		    required ?
-		        ImGui::InputText(label.data(), item.m_Name, sizeof(item.m_Name)) :
-		        ImGui::InputTextWithHint(label.data(), "Optional", item.m_Name, sizeof(item.m_Name)))
+		        ImGui::InputText(translatedLabel.c_str(), item.m_Name, sizeof(item.m_Name)) :
+		        ImGui::InputTextWithHint(translatedLabel.c_str(), translatedHint.c_str(), item.m_Name, sizeof(item.m_Name)))
 		{
 			item.m_Hash = Joaat(item.m_Name);
 			if (auto cat_item = Pointers.GetCatalogItem(Pointers.NetCatalog, &item.m_Hash))
@@ -525,13 +528,15 @@ namespace YimMenu::Submenus
 				OnTransactionTypeChanged(info);
 
 			ImGui::SetNextItemWidth(250.0f);
-			if (ImGui::BeginCombo("Category", info.m_Category.m_Name))
+			const auto categoryName = Localization::Translate(info.m_Category.m_Name);
+			if (ImGui::BeginCombo("Category", categoryName.c_str()))
 			{
 				for (auto& item : NET_SHOP_CATEGORIES)
 				{
 					if ((info.m_Type != TransactionInfo::Type::SERVICE) ^ IsCategoryService(item.second))
 					{
-						if (ImGui::Selectable(item.first, item.second == info.m_Category.m_Hash))
+						const auto translatedCategory = Localization::Translate(item.first);
+						if (ImGui::Selectable(translatedCategory.c_str(), item.second == info.m_Category.m_Hash))
 						{
 							info.m_Category.m_Name = item.first;
 							info.m_Category.m_Hash = item.second;
@@ -545,13 +550,15 @@ namespace YimMenu::Submenus
 			}
 
 			ImGui::SetNextItemWidth(250.0f);
-			if (ImGui::BeginCombo("Action", info.m_Action.m_Name))
+			const auto actionName = Localization::Translate(info.m_Action.m_Name);
+			if (ImGui::BeginCombo("Action", actionName.c_str()))
 			{
 				for (auto& item : NET_SHOP_ACTIONS)
 				{
 					if (info.m_Type != TransactionInfo::Type::SERVICE || IsActionService(item.second))
 					{
-						if (ImGui::Selectable(item.first, item.second == info.m_Action.m_Hash))
+						const auto translatedAction = Localization::Translate(item.first);
+						if (ImGui::Selectable(translatedAction.c_str(), item.second == info.m_Action.m_Hash))
 						{
 							info.m_Action.m_Name = item.first;
 							info.m_Action.m_Hash = item.second;

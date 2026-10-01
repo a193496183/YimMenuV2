@@ -1,4 +1,5 @@
 ﻿#include "core/backend/FiberPool.hpp"
+#include "core/localization/Localization.hpp"
 #include "core/frontend/widgets/imgui_bitfield.hpp"
 #include "game/backend/AnticheatBypass.hpp"
 #include "game/gta/Natives.hpp"
@@ -490,7 +491,7 @@ namespace YimMenu::Submenus
 
 		normal->AddItem(std::make_unique<ImGuiItem>([] {
 			if (!NativeInvoker::AreHandlersCached())
-				return ImGui::TextDisabled("Natives not cached yet");
+				return ImGui::TextDisabled("%s", Localization::Translate("Natives not cached yet.").c_str());
 
 			static StatInfo current_info;
 			static char stat_buf[48]{};
@@ -505,7 +506,7 @@ namespace YimMenu::Submenus
 			}
 
 			if (!current_info.IsValid())
-				return ImGui::TextDisabled("Stat not found");
+				return ImGui::TextDisabled("%s", Localization::Translate("Stat not found").c_str());
 			else if (current_info.m_Normalized)
 			{
 				ImGui::Text("Normalized name to: %s", current_info.m_Name.data());
@@ -535,7 +536,7 @@ namespace YimMenu::Submenus
 
 		packed->AddItem(std::make_unique<ImGuiItem>([] {
 			if (!NativeInvoker::AreHandlersCached())
-				return ImGui::TextDisabled("Natives not cached yet");
+				return ImGui::TextDisabled("%s", Localization::Translate("Natives not cached yet.").c_str());
 
 			// TODO: improve packed stat editor
 			static PackedStatInfo current_info{0, false, true};
@@ -550,7 +551,7 @@ namespace YimMenu::Submenus
 			}
 
 			if (!current_info.IsValid())
-				return ImGui::TextDisabled("Index not valid");
+				return ImGui::TextDisabled("%s", Localization::Translate("Invalid index").c_str());
 
 			RenderPackedStatEditor(value, current_info);
 
@@ -565,7 +566,7 @@ namespace YimMenu::Submenus
 
 		packed_range->AddItem(std::make_unique<ImGuiItem>([] {
 			if (!NativeInvoker::AreHandlersCached())
-				return ImGui::TextDisabled("Natives not cached yet");
+				return ImGui::TextDisabled("%s", Localization::Translate("Natives not cached yet.").c_str());
 
 			static int start{}, end{}, value{};
 
@@ -585,7 +586,7 @@ namespace YimMenu::Submenus
 
 		from_clipboard->AddItem(std::make_unique<ImGuiItem>([] {
 			if (!NativeInvoker::AreHandlersCached())
-				return ImGui::TextDisabled("Natives not cached yet");
+				return ImGui::TextDisabled("%s", Localization::Translate("Natives not cached yet.").c_str());
 
 			if (ImGui::Button("Load from Clipboard"))
 			{

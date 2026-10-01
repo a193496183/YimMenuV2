@@ -1,4 +1,5 @@
 #include "DrawHotkey.hpp"
+#include "core/localization/Localization.hpp"
 
 namespace YimMenu
 {
@@ -6,7 +7,8 @@ namespace YimMenu
 	{
 		ImGui::PushID(link);
 
-		ImGui::Button(label.data());
+		const auto translatedLabel = Localization::Translate(label);
+		ImGui::Button(translatedLabel.c_str());
 
 		bool active = ImGui::IsItemActive();
 
