@@ -3,7 +3,7 @@
 namespace YimMenu
 {
 	CollapsingHeaderItem::CollapsingHeaderItem(const std::string& name) :
-	    m_Name(LocalizeMenuText(name))
+	    m_Name(name)
 	{
 	}
 

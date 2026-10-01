@@ -3,7 +3,7 @@
 namespace YimMenu
 {
 	TabItem::TabItem(const std::string& name) :
-	    m_Name(LocalizeMenuText(name))
+	    m_Name(name)
 	{
 	}
 

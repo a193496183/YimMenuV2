@@ -7,7 +7,7 @@
 namespace YimMenu
 {
 	Group::Group(const std::string& name, int items_per_column) :
-	    m_Name(LocalizeMenuText(name)),
+	    m_Name(name),
 	    m_ItemsPerColumn(items_per_column)
 	{
 	}

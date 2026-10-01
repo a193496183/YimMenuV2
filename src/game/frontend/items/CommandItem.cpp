@@ -17,11 +17,11 @@ namespace YimMenu
 	{
 		if (!m_Command)
 		{
-			ImGui::Text("%s", LocalizeMenuText("Unknown!").c_str());
+			ImGui::Text("Unknown!");
 			return;
 		}
 
-		if (ImGui::Button(m_LabelOverride.has_value() ? LocalizeMenuText(m_LabelOverride.value()).data() : m_Command->GetLabel().data()))
+		if (ImGui::Button(m_LabelOverride.has_value() ? m_LabelOverride.value().data() : m_Command->GetLabel().data()))
 		{
 			// Capture the command by value, not 'this'. This item may be drawn from a 
 			// Lua command handle's :draw()) and gets destroyed before the FiberPool task runs.
@@ -33,19 +33,19 @@ namespace YimMenu
 
 		// TODO: refactor this
 
-		auto windowLabel = std::format("{} {}", m_Command->GetLabel(), LocalizeMenuText("Hotkey"));
+		auto windowLabel = std::format("{} Hotkey", m_Command->GetLabel());
 
 		if (ImGui::IsItemHovered())
 		{
 			ImGui::SetTooltip("%s", m_Command->GetDescription().data());
 			if (GetAsyncKeyState(VK_CAPITAL) & 0x8000)
-				ImGui::OpenPopup(std::format("{} {}", m_Command->GetLabel(), LocalizeMenuText("Hotkey")).data());
+				ImGui::OpenPopup(std::format("{} Hotkey", m_Command->GetLabel()).data());
 		}
 
 		ImGui::SetNextWindowSize(ImVec2(500, 120));
 		if (ImGui::BeginPopupModal(windowLabel.data(), nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar))
 		{
-			ImGui::BulletText("%s", LocalizeMenuText("Enter a keystroke").c_str());
+			ImGui::BulletText("Enter a keystroke");
 
 			ImGui::Separator();
 
@@ -55,7 +55,7 @@ namespace YimMenu
 				DrawHotkey(&it->second, m_Command->GetLabel());
 
 			ImGui::Spacing();
-			if (ImGui::Button(LocalizeMenuText("Close").c_str()) || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
+			if (ImGui::Button("Close") || ((!ImGui::IsWindowHovered() && !ImGui::IsAnyItemHovered()) && ImGui::IsMouseClicked(ImGuiMouseButton_Left)))
 			{
 				HotkeySystem::SetBeingModifed(false);
 				ImGui::CloseCurrentPopup();

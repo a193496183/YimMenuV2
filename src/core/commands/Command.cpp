@@ -6,8 +6,8 @@ namespace YimMenu
 {
 	Command::Command(std::string name, std::string label, std::string description, int num_args) :
 	    m_Name(name),
-	    m_Label(LocalizeMenuText(label)),
-	    m_Description(LocalizeMenuText(description)),
+	    m_Label(label),
+	    m_Description(description),
 	    m_NumArgs(num_args),
 	    m_Hash(Joaat(name))
 	{

@@ -55,8 +55,6 @@ namespace YimMenu
 		        0x2DFF, // Cyrillic Extended-A
 		        0xA640,
 		        0xA69F, // Cyrillic Extended-B
-		        0x4E00,
-		        0x9FFF, // CJK Unified Ideographs
 		        0,
 		    };
 		return &ranges[0];
