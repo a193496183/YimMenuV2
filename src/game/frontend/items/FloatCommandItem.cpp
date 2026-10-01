@@ -27,7 +27,7 @@ namespace YimMenu
 		if (!m_Command->GetMinimum().has_value() || !m_Command->GetMaximum().has_value() || !m_useSlider)
 		{
 			ImGui::SetNextItemWidth(150);
-			if (ImGui::InputFloat(label, &value))
+			if (ImGui::InputFloat(label.c_str(), &value))
 			{
 				m_Command->SetState(value);
 			}
@@ -35,7 +35,7 @@ namespace YimMenu
 		else
 		{
 			ImGui::SetNextItemWidth(150);
-			if (ImGui::SliderFloat(label, &value, m_Command->GetMinimum().value(), m_Command->GetMaximum().value()))
+			if (ImGui::SliderFloat(label.c_str(), &value, m_Command->GetMinimum().value(), m_Command->GetMaximum().value()))
 			{
 				m_Command->SetState(value);
 			}

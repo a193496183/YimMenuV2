@@ -29,10 +29,10 @@ namespace YimMenu
 		ImGui::SetNextItemWidth(150);
 		if (ImGui::ColorButton(label.c_str(), color))
 		{
-			ImGui::OpenPopup(label);
+			ImGui::OpenPopup(label.c_str());
 		}
 
-		if (ImGui::BeginPopup(label))
+		if (ImGui::BeginPopup(label.c_str()))
 		{
 			if (ImGui::ColorPicker4("##picker", (float*)&color))
 			{
