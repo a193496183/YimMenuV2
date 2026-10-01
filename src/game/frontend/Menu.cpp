@@ -70,6 +70,17 @@ namespace YimMenu
 		// just use Arial for Cyrillic
 
 		FontCfg.MergeMode = true;
+		const auto fontsPath = std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts";
+		for (const auto& candidate : {"msyh.ttc", "msyhbd.ttc", "simhei.ttf", "simsun.ttc", "arialuni.ttf"})
+		{
+			auto fullPath = fontsPath / candidate;
+			if (std::filesystem::exists(fullPath))
+			{
+				io.Fonts->AddFontFromFileTTF(fullPath.string().c_str(), size, &FontCfg, io.Fonts->GetGlyphRangesChineseFull());
+				break;
+			}
+		}
+
 		io.Fonts->AddFontFromFileTTF((std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts" / "arial.ttf").string().c_str(), size, &FontCfg, GetGlyphRangesCyrillicOnly());
 		io.Fonts->AddFontFromFileTTF((std::filesystem::path(std::getenv("SYSTEMROOT")) / "Fonts" / "meiryo.ttc").string().c_str(), size, &FontCfg, io.Fonts->GetGlyphRangesJapanese());
 
