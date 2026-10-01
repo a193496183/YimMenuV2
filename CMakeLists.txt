@@ -57,6 +57,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 target_compile_options(${PROJECT_NAME} PRIVATE
+    $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/utf-8>
     # Do not warn about non-reproducible code
     $<$<COMPILE_LANG_AND_ID:C,Clang>:-Wno-date-time>
     $<$<COMPILE_LANG_AND_ID:CXX,Clang>:-Wno-date-time>
